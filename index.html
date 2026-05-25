@@ -3,85 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>凌云工作室</title>
+    <title>凌云工作室 | LingYun Studio</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft YaHei", sans-serif;
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
         }
 
         body {
-            background-color: #f5f7fa;
-            padding: 30px 20px;
-            max-width: 800px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef2fc 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 900px;
             margin: 0 auto;
-            line-height: 1.7;
-            color: #333;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 30, 80, 0.08);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 36px;
+            color: #1a202c;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 50px;
         }
 
         h2 {
-            color: #2c3e50;
-            margin: 25px 0 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #3498db;
             font-size: 24px;
+            color: #2b6cb0;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        h2::before {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background: #2b6cb0;
+            bottom: -2px;
+            left: 0;
         }
 
         h3 {
-            color: #34495e;
-            margin: 18px 0 12px;
-            font-size: 19px;
+            font-size: 18px;
+            color: #4a5568;
+            margin: 20px 0 12px;
         }
 
-        a {
+        .link-card {
             display: block;
-            color: #3498db;
+            padding: 14px 20px;
+            margin: 10px 0;
+            background: #f7fafc;
+            border-radius: 12px;
+            color: #2b6cb0;
             text-decoration: none;
-            margin: 8px 0;
-            padding: 6px 10px;
-            border-radius: 4px;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
         }
 
-        a:hover {
-            background-color: #eaf5ff;
-            padding-left: 15px;
+        .link-card:hover {
+            background: #edf2f7;
+            border-left-color: #2b6cb0;
+            transform: translateX(6px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         ol {
-            margin-left: 25px;
+            margin-left: 24px;
         }
 
         li {
-            margin: 6px 0;
+            padding: 8px 0;
             font-size: 16px;
+            color: #2d3748;
         }
 
-        p {
-            color: #7f8c8d;
+        .empty {
+            color: #a0aec0;
             font-style: italic;
-            margin: 10px 0;
+            padding: 10px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #a0aec0;
+            font-size: 14px;
         }
     </style>
 </head>
+
 <body>
-    <h2>我们的作品</h2>
-    <h3>主要作品</h3>
-    <a href="https://github.com/xxy150310git/G-Lang">G Lang编程语言</a>
-    <a href="https://xxy150310git.github.io/">xxy150310的博客</a>
-    <a href="https://xxy150310git.github.io/OI_game/">OI卡牌游戏(测试中)</a>
-    <a href="https://github.com">CCF模拟器(还未发布)</a>
+    <div class="container">
+        <h1 class="title">凌云工作室</h1>
+        <p class="subtitle">LingYun Studio · 创造有趣的技术作品</p>
 
-    <h3>次要作品</h3>
-    <p>没有了哦</p>
+        <h2>我们的作品</h2>
+        <h3>主要作品</h3>
+        <a class="link-card" href="https://github.com/xxy150310git/G-Lang">G Lang 编程语言</a>
+        <a class="link-card" href="https://xxy150310git.github.io/">xxy150310 的博客</a>
+        <a class="link-card" href="https://xxy150310git.github.io/OI_game/">OI 卡牌游戏（测试中）</a>
+        <a class="link-card" href="https://github.com">CCF 模拟器（还未发布）</a>
 
-    <h2>协作人员</h2>
-    <ol>
-        <li>xxy150310git(xxy150310)</li>
-        <li>catcoder-0(wangyutang)</li>
-        <li>TT-chen-cqz(TT-chen)</li>
-    </ol>
+        <h3>次要作品</h3>
+        <p class="empty">没有了哦</p>
+
+        <h2>协作人员</h2>
+        <ol>
+            <li>xxy150310git (xxy150310)</li>
+            <li>catcoder-0 (wangyutang)</li>
+            <li>TT-chen-cqz (TT-chen)</li>
+        </ol>
+
+        <div class="footer">© 2025 凌云工作室 版权所有</div>
+    </div>
 </body>
 </html>
