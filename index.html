@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,45 +10,114 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            transition: background 0.3s, color 0.2s;
+        }
+
+        :root.light {
+            --bg: linear-gradient(135deg, #f8f9ff 0%, #eef2fc 100%);
+            --card: #ffffff;
+            --text: #2d3748;
+            --text2: #4a5568;
+            --text3: #718096;
+            --border: #e2e8f0;
+            --theme: #2b6cb0;
+            --card-hover: #edf2f7;
+        }
+
+        :root.dark {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --text: #e0e0e0;
+            --text2: #b0b0b0;
+            --text3: #888;
+            --border: #333;
+            --theme: #4d9fcf;
+            --card-hover: #2a2a2a;
+        }
+
+        html, body {
+            min-height: 100vh;
         }
 
         body {
-            background: linear-gradient(135deg, #f8f9ff 0%, #eef2fc 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #2d3748;
+            background: var(--bg);
+            color: var(--text);
         }
 
+        /* 导航栏 */
+        .navbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--theme);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--theme);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text2);
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: var(--theme);
+        }
+
+        /* 暗黑切换按钮 */
+        .theme-toggle {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* 主体容器 */
         .container {
             max-width: 900px;
-            margin: 0 auto;
-            background: white;
+            margin: 40px auto;
+            background: var(--card);
             padding: 50px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 30, 80, 0.08);
         }
 
-        .title {
-            text-align: center;
-            font-size: 36px;
-            color: #1a202c;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #718096;
-            font-size: 16px;
-            margin-bottom: 50px;
-        }
-
         h2 {
             font-size: 24px;
-            color: #2b6cb0;
+            color: var(--theme);
             margin: 40px 0 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid var(--border);
             position: relative;
         }
 
@@ -57,14 +126,14 @@
             position: absolute;
             width: 50px;
             height: 2px;
-            background: #2b6cb0;
+            background: var(--theme);
             bottom: -2px;
             left: 0;
         }
 
         h3 {
             font-size: 18px;
-            color: #4a5568;
+            color: var(--text2);
             margin: 20px 0 12px;
         }
 
@@ -72,19 +141,17 @@
             display: block;
             padding: 14px 20px;
             margin: 10px 0;
-            background: #f7fafc;
+            background: var(--card);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            color: #2b6cb0;
+            color: var(--theme);
             text-decoration: none;
             transition: all 0.3s ease;
-            border-left: 4px solid transparent;
         }
 
         .link-card:hover {
-            background: #edf2f7;
-            border-left-color: #2b6cb0;
+            background: var(--card-hover);
             transform: translateX(6px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         ol {
@@ -93,31 +160,38 @@
 
         li {
             padding: 8px 0;
-            font-size: 16px;
-            color: #2d3748;
+            color: var(--text);
         }
 
         .empty {
-            color: #a0aec0;
+            color: var(--text3);
             font-style: italic;
-            padding: 10px 0;
         }
 
         .footer {
             text-align: center;
             margin-top: 60px;
-            color: #a0aec0;
-            font-size: 14px;
+            color: var(--text3);
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="title">凌云工作室</h1>
-        <p class="subtitle">LingYun Studio · 创造有趣的技术作品</p>
+    <!-- 导航栏 + LOGO + 暗黑模式开关 -->
+    <div class="navbar">
+        <div class="logo">
+            <div class="logo-icon">凌云</div>
+            凌云工作室
+        </div>
+        <div class="nav-links">
+            <a href="#works">作品</a>
+            <a href="#members">成员</a>
+            <button class="theme-toggle" id="toggle">暗黑模式</button>
+        </div>
+    </div>
 
-        <h2>我们的作品</h2>
+    <div class="container">
+        <h2 id="works">我们的作品</h2>
         <h3>主要作品</h3>
         <a class="link-card" href="https://github.com/xxy150310git/G-Lang">G Lang 编程语言</a>
         <a class="link-card" href="https://xxy150310git.github.io/">xxy150310 的博客</a>
@@ -127,7 +201,7 @@
         <h3>次要作品</h3>
         <p class="empty">没有了哦</p>
 
-        <h2>协作人员</h2>
+        <h2 id="members">协作人员</h2>
         <ol>
             <li>xxy150310git (xxy150310)</li>
             <li>catcoder-0 (wangyutang)</li>
@@ -136,5 +210,22 @@
 
         <div class="footer">© 2025 凌云工作室 版权所有</div>
     </div>
+
+    <script>
+        const toggle = document.getElementById('toggle');
+        const html = document.documentElement;
+
+        toggle.addEventListener('click', () => {
+            if (html.classList.contains('light')) {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                toggle.textContent = '亮色模式';
+            } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                toggle.textContent = '暗黑模式';
+            }
+        });
+    </script>
 </body>
 </html>
