@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LingKong Studio · 凌空工作室 | 开发进度追踪">
+<title>开发进度 · LingKong Studio</title>
+
+<style>
+/* ========== 主题变量 ========== */
+:root.dark {
+    --bg: #1a1d2e;
+    --bg-soft: #232637;
+    --bg-card: #1e2030;
+    --fg: #d4d8e8;
+    --muted: #8a90a6;
+    --accent: #7aa2f7;
+    --accent2: #bb9af7;
+    --accent3: #9ece6a;
+    --accent-warn: #e0af68;
+    --accent-red: #f7768e;
+    --border: #2f3349;
+}
+
+:root.light {
+    --bg: #f5f6fa;
+    --bg-soft: #ffffff;
+    --bg-card: #fafbfe;
+    --fg: #2c2e3e;
+    --muted: #6b7080;
+    --accent: #3b6cb5;
+    --accent2: #7c5cb3;
+    --accent3: #4a9b3a;
+    --accent-warn: #c08a30;
+    --accent-red: #d94f6e;
+    --border: #d8dce8;
+}
+
+/* ========== 全局 ========== */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", "Microsoft YaHei", monospace;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+}
+
+/* ========== 导航栏 ========== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: rgba(26, 29, 46, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+:root.light .navbar { background: rgba(245, 246, 250, 0.85); }
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.nav-brand .bracket { color: var(--accent2); }
+
+.nav-links { display: flex; gap: 24px; align-items: center; }
+
+.nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active { color: var(--accent); }
+
+.theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ========== 返回按钮 ========== */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--accent); }
+
+/* ========== 页面标题 ========== */
+.page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 20px 0;
+}
+
+.page-header .label {
+    font-size: 13px;
+    color: var(--accent3);
+    margin-bottom: 6px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    margin: 0 0 8px;
+}
+
+.page-header h1 .cn { color: var(--accent); }
+.page-header h1 .en { color: var(--accent2); }
+
+.page-header .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* ========== 项目总览卡片 ========== */
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 50px;
+}
+
+.overview-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.overview-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.25s;
+}
+
+.overview-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+.overview-card:hover::before { transform: scaleY(1); }
+.overview-card.active { border-color: var(--accent); }
+.overview-card.active::before { transform: scaleY(1); }
+
+.overview-card .ov-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 4px;
+}
+
+.overview-card .ov-name-cn {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.overview-card .ov-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.overview-card .ov-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s ease;
+}
+
+.overview-card .ov-stats {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 10px;
+}
+
+.ov-stats .s-done { color: var(--accent3); }
+.ov-stats .s-doing { color: var(--accent-warn); }
+.ov-stats .s-todo { color: var(--accent-red); }
+
+/* ========== 详情区域 ========== */
+.detail-section {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-header .dh-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.detail-header .dh-title-cn {
+    font-size: 15px;
+    color: var(--muted);
+    margin-left: 8px;
+}
+
+.detail-header .dh-desc {
+    font-size: 13px;
+    color: var(--muted);
+    width: 100%;
+    margin-top: 6px;
+}
+
+.detail-header .dh-meta {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+}
+
+/* ========== 进度条 ========== */
+.progress-wrap { margin-bottom: 28px; }
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.progress-bar {
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+/* ========== 任务分类 ========== */
+.task-category {
+    margin-bottom: 24px;
+}
+
+.task-category-title {
+    font-size: 15px;
+    color: var(--accent2);
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent2);
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.task-item:hover { background: var(--bg-card); }
+
+.task-item .task-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.task-item.done .task-icon   { background: rgba(158, 206, 106, 0.2); color: var(--accent3); }
+.task-item.doing .task-icon  { background: rgba(224, 175, 104, 0.2); color: var(--accent-warn); }
+.task-item.todo .task-icon   { background: rgba(247, 118, 142, 0.15); color: var(--accent-red); }
+.task-item.paused .task-icon { background: rgba(138, 144, 166, 0.2); color: var(--muted); }
+
+.task-item .task-name { flex: 1; }
+
+.task-item.done .task-name   { color: var(--fg); text-decoration: line-through; opacity: 0.7; }
+.task-item.doing .task-name  { color: var(--fg); font-weight: 500; }
+.task-item.todo .task-name   { color: var(--muted); }
+.task-item.paused .task-name { color: var(--muted); font-style: italic; }
+
+.task-item .task-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.task-item.done .task-tag   { background: rgba(158, 206, 106, 0.15); color: var(--accent3); }
+.task-item.doing .task-tag  { background: rgba(224, 175, 104, 0.15); color: var(--accent-warn); }
+.task-item.todo .task-tag   { background: rgba(247, 118, 142, 0.12); color: var(--accent-red); }
+.task-item.paused .task-tag { background: rgba(138, 144, 166, 0.15); color: var(--muted); }
+
+/* ========== 统计面板 ========== */
+.stats-panel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+}
+
+.stat-num {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.stat-box.done .stat-num   { color: var(--accent3); }
+.stat-box.doing .stat-num  { color: var(--accent-warn); }
+.stat-box.todo .stat-num   { color: var(--accent-red); }
+.stat-box.total .stat-num  { color: var(--accent); }
+
+.stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* ========== 空状态 ========== */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* ========== 页脚 ========== */
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+footer .brand-cn { color: var(--accent); }
+footer .brand-en { color: var(--accent2); }
+
+/* ========== 移动端 ========== */
+@media (max-width: 640px) {
+    .container { padding: 24px 14px 60px; }
+    .navbar { padding: 12px 16px; }
+    .nav-links { gap: 14px; }
+    .stats-panel { grid-template-columns: repeat(2, 1fr); }
+    .detail-section { padding: 20px 16px; }
+    .page-header h1 { font-size: 24px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 导航 -->
+<nav class="navbar">
+    <div class="nav-brand">
+        <span class="bracket">{</span>
+        LingKong · 凌空
+        <span class="bracket">}</span>
+    </div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="progress.html" class="active">Progress</a>
+        <button class="theme-toggle" id="toggle">☀ light</button>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- 返回 + 标题 -->
+    <a class="back-link" href="index.html">← 返回主站 Home</a>
+
+    <div class="page-header">
+        <div class="label">$ cat dev_progress.log</div>
+        <h1>
+            <span class="cn">开发进度</span> ·
+            <span class="en">Dev Progress</span>
+        </h1>
+        <p class="subtitle">实时追踪每个项目的完成状态 · Real-time project tracking</p>
+    </div>
+
+    <!-- 项目总览 -->
+    <div class="overview-grid" id="overviewGrid"></div>
+
+    <!-- 详情挂载点 -->
+    <div id="detailMount"></div>
+
+</div>
+
+<footer>
+    <span class="brand-cn">凌空工作室</span> ·
+    <span class="brand-en">LingKong Studio</span>
+    · 2026 All Rights Reserved
+</footer>
+
+<!-- 引入进度数据 -->
+<script src="f.js"></script>
+<script>
+// ========== 暗黑 / 亮色切换 ==========
+const toggle = document.getElementById('toggle');
+const root = document.documentElement;
+
+toggle.onclick = () => {
+    if (root.classList.contains('dark')) {
+        root.classList.replace('dark', 'light');
+        toggle.textContent = '🌙 dark';
+    } else {
+        root.classList.replace('light', 'dark');
+        toggle.textContent = '☀ light';
+    }
+};
+
+// ========== 状态配置 ==========
+const STATUS = {
+    done:   { label: "已完成", icon: "✅", cls: "done"   },
+    doing:  { label: "进行中", icon: "🔄", cls: "doing"  },
+    todo:   { label: "未完成", icon: "❌", cls: "todo"   },
+    paused: { label: "已暂停", icon: "⏸️", cls: "paused" },
+};
+
+// ========== 渲染项目总览卡片 ==========
+function renderOverview() {
+    const grid = document.getElementById('overviewGrid');
+    const keys = Object.keys(DEV_PROGRESS);
+
+    keys.forEach((key, idx) => {
+        const proj = DEV_PROGRESS[key];
+        const counts = countStatus(key);
+        const total = counts.done + counts.doing + counts.todo + counts.paused;
+
+        // 进度条颜色
+        let barColor = 'var(--accent)';
+        if (proj.progress >= 70) barColor = 'var(--accent3)';
+        else if (proj.progress >= 30) barColor = 'var(--accent-warn)';
+        else if (proj.progress === 0) barColor = 'var(--accent-red)';
+
+        const card = document.createElement('div');
+        card.className = 'overview-card' + (idx === 0 ? ' active' : '');
+        card.dataset.key = key;
+        card.innerHTML = `
+            <div class="ov-name">${proj.name}</div>
+            <div class="ov-name-cn">${proj.name_cn}</div>
+            <div class="ov-bar">
+                <div class="ov-bar-fill" style="width:${proj.progress}%; background:${barColor}"></div>
+            </div>
+            <div class="ov-stats">
+                <span class="s-done">✅ ${counts.done}</span>
+                <span class="s-doing">🔄 ${counts.doing}</span>
+                <span class="s-todo">❌ ${counts.todo}</span>
+            </div>
+        `;
+
+        card.onclick = () => {
+            document.querySelectorAll('.overview-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            renderDetail(key);
+            // 平滑滚动到详情
+            document.getElementById('detailMount').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        grid.appendChild(card);
+    });
+}
+
+// ========== 渲染项目详情 ==========
+function renderDetail(key) {
+    const proj = DEV_PROGRESS[key];
+    const mount = document.getElementById('detailMount');
+
+    if (!proj) {
+        mount.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <p>暂无数据 / No data available</p>
+            </div>
+        `;
+        return;
+    }
+
+    const counts = countStatus(key);
+    const total = counts.done + counts.doing + counts.todo + counts.paused;
+
+    // 统计面板
+    let html = `
+        <div class="detail-section">
+            <div class="detail-header">
+                <div>
+                    <span class="dh-title">${proj.name}</span>
+                    <span class="dh-title-cn">${proj.name_cn}</span>
+                    <div class="dh-desc">${proj.desc}</div>
+                </div>
+                <div class="dh-meta">
+                    最后更新: ${proj.last_update || 'N/A'}<br>
+                    仓库: ${proj.repo ? `<a href="${proj.repo}" style="color:var(--accent)">${proj.repo.replace('https://', '')}</a>` : '未公开'}
+                </div>
+            </div>
+
+            <!-- 进度条 -->
+            <div class="progress-wrap">
+                <div class="progress-label">
+                    <span>整体进度 / Total Progress</span>
+                    <span>${proj.progress}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width:${proj.progress}%"></div>
+                </div>
+            </div>
+
+            <!-- 统计 -->
+            <div class="stats-panel">
+                <div class="stat-box total">
+                    <div class="stat-num">${total}</div>
+                    <div class="stat-label">总任务 / Total</div>
+                </div>
+                <div class="stat-box done">
+                    <div class="stat-num">${counts.done}</div>
+                    <div class="stat-label">已完成 / Done</div>
+                </div>
+                <div class="stat-box doing">
+                    <div class="stat-num">${counts.doing}</div>
+                    <div class="stat-label">进行中 / Doing</div>
+                </div>
+                <div class="stat-box todo">
+                    <div class="stat-num">${counts.todo}</div>
+                    <div class="stat-label">未完成 / Todo</div>
+                </div>
+            </div>
+    `;
+
+    // 任务列表
+    proj.tasks.forEach(group => {
+        html += `<div class="task-category">`;
+        html += `<div class="task-category-title">${group.category}</div>`;
+        html += `<ul class="task-list">`;
+
+        group.items.forEach(item => {
+            const s = STATUS[item.status] || {};
+            html += `
+                <li class="task-item ${s.cls}">
+                    <span class="task-icon">${s.icon || '·'}</span>
+                    <span class="task-name">${item.name}</span>
+                    <span class="task-tag">${s.label || ''}</span>
+                </li>
+            `;
+        });
+
+        html += `</ul></div>`;
+    });
+
+    html += `</div>`;
+    mount.innerHTML = html;
+}
+
+// ========== 初始化 ==========
+renderOverview();
+renderDetail(Object.keys(DEV_PROGRESS)[0]);
+
+// 控制台
+console.log('%c[LingKong] Progress Page loaded 📊', 'color:#7aa2f7;font-size:16px;font-weight:bold;');
+</script>
+
+</body>
+</html>
