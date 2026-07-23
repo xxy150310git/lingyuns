@@ -1,233 +1,596 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="light">
+<html lang="zh-CN" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>凌空工作室 | LingKong Studio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-            transition: background 0.3s, color 0.2s;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="LingKong Studio · 凌空工作室 | 自研语言 / OI 算法 / 原创项目">
+<title>LingKong Studio · 凌空工作室</title>
 
-        :root.light {
-            --bg: linear-gradient(135deg, #f8f9ff 0%, #eef2fc 100%);
-            --card: #ffffff;
-            --text: #2d3748;
-            --text2: #4a5568;
-            --text3: #718096;
-            --border: #e2e8f0;
-            --theme: #2b6cb0;
-            --card-hover: #edf2f7;
-        }
+<style>
+/* ========== 主题变量 ========== */
+:root.dark {
+    --bg: #1a1d2e;
+    --bg-soft: #232637;
+    --fg: #d4d8e8;
+    --muted: #8a90a6;
+    --accent: #7aa2f7;
+    --accent2: #bb9af7;
+    --accent3: #9ece6a;
+    --border: #2f3349;
+    --tag-bg: rgba(122, 162, 247, 0.15);
+    --tag-text: #7aa2f7;
+}
 
-        :root.dark {
-            --bg: #121212;
-            --card: #1e1e1e;
-            --text: #e0e0e0;
-            --text2: #b0b0b0;
-            --text3: #888;
-            --border: #333;
-            --theme: #4d9fcf;
-            --card-hover: #2a2a2a;
-        }
+:root.light {
+    --bg: #f5f6fa;
+    --bg-soft: #ffffff;
+    --fg: #2c2e3e;
+    --muted: #6b7080;
+    --accent: #3b6cb5;
+    --accent2: #7c5cb3;
+    --accent3: #4a9b3a;
+    --border: #d8dce8;
+    --tag-bg: rgba(59, 108, 181, 0.1);
+    --tag-text: #3b6cb5;
+}
 
-        html, body {
-            min-height: 100vh;
-        }
+/* ========== 全局 ========== */
+* { box-sizing: border-box; }
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-        }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "JetBrains Mono", "Fira Code", "Consolas", "Microsoft YaHei", monospace;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+}
 
-        /* 导航栏 */
-        .navbar {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-        }
+::selection { background: var(--accent); color: #fff; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--theme);
-        }
+.container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 50px 24px 100px;
+}
 
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--theme);
-            color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
+/* ========== 导航栏 ========== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: rgba(26, 29, 46, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
+:root.light .navbar { background: rgba(245, 246, 250, 0.85); }
 
-        .nav-links a {
-            color: var(--text2);
-            text-decoration: none;
-        }
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--accent);
+}
 
-        .nav-links a:hover {
-            color: var(--theme);
-        }
+.nav-brand .bracket { color: var(--accent2); }
 
-        /* 暗黑切换按钮 */
-        .theme-toggle {
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
 
-        /* 主体容器 */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: var(--card);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 30, 80, 0.08);
-        }
+.nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
 
-        h2 {
-            font-size: 24px;
-            color: var(--theme);
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border);
-            position: relative;
-        }
+.nav-links a:hover { color: var(--accent); }
 
-        h2::before {
-            content: "";
-            position: absolute;
-            width: 50px;
-            height: 2px;
-            background: var(--theme);
-            bottom: -2px;
-            left: 0;
-        }
+.theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: all 0.2s;
+}
 
-        h3 {
-            font-size: 18px;
-            color: var(--text2);
-            margin: 20px 0 12px;
-        }
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
-        .link-card {
-            display: block;
-            padding: 14px 20px;
-            margin: 10px 0;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--theme);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
+/* ========== HERO ========== */
+.hero {
+    padding: 60px 0 30px;
+    margin-bottom: 40px;
+    text-align: center;
+}
 
-        .link-card:hover {
-            background: var(--card-hover);
-            transform: translateX(6px);
-        }
+.hero-label {
+    font-size: 13px;
+    color: var(--accent3);
+    margin-bottom: 8px;
+}
 
-        ol {
-            margin-left: 24px;
-        }
+.hero h1 {
+    font-size: 36px;
+    margin: 0 0 10px;
+    line-height: 1.3;
+}
 
-        li {
-            padding: 8px 0;
-            color: var(--text);
-        }
+.hero h1 .cn { color: var(--accent); }
+.hero h1 .en { color: var(--accent2); }
 
-        .empty {
-            color: var(--text3);
-            font-style: italic;
-        }
+.hero .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.8;
+}
 
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            color: var(--text3);
-        }
-    </style>
+.hero .subtitle .highlight {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* ========== HERO 按钮组 ========== */
+.hero-actions {
+    margin-top: 28px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.25s ease;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(122, 162, 247, 0.35);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(122, 162, 247, 0.5);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-outline:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn .arrow { transition: transform 0.25s; }
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* ========== 区块标题 ========== */
+section { margin-bottom: 50px; }
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.section-title .hash { color: var(--accent2); font-weight: bold; }
+.section-title .en-title { color: var(--muted); font-size: 14px; margin-left: auto; }
+
+/* ========== 作品卡片 ========== */
+.works-grid { display: grid; gap: 14px; }
+
+.work-card {
+    display: block;
+    padding: 18px 22px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--fg);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.work-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.25s ease;
+}
+
+.work-card:hover { border-color: var(--accent); transform: translateX(4px); }
+.work-card:hover::before { transform: scaleY(1); }
+
+.work-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.work-name { font-size: 16px; font-weight: bold; color: var(--accent); }
+.work-name-en { font-size: 13px; color: var(--muted); }
+.work-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.tag-wip { background: rgba(187, 154, 247, 0.15); color: var(--accent2); }
+.tag-beta { background: rgba(158, 206, 106, 0.15); color: var(--accent3); }
+
+/* ========== 时间线 ========== */
+.timeline { border-left: 2px solid var(--border); margin-left: 8px; padding-left: 22px; }
+.timeline-item { position: relative; padding: 8px 0; color: var(--fg); font-size: 14px; }
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -27px; top: 14px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+}
+.timeline-item .date { color: var(--accent2); font-weight: bold; margin-right: 8px; }
+.timeline-item .content { color: var(--muted); }
+
+/* ========== 成员 ========== */
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.member-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: all 0.25s;
+}
+
+.member-card:hover { border-color: var(--accent); }
+
+.member-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+}
+
+.member-info { flex: 1; }
+.member-name { font-size: 14px; font-weight: bold; color: var(--fg); }
+.member-role { font-size: 12px; color: var(--muted); }
+
+/* ========== 页脚 ========== */
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+footer .brand-cn { color: var(--accent); }
+footer .brand-en { color: var(--accent2); }
+
+/* ========== 返回顶部 ========== */
+#backTop {
+    position: fixed;
+    right: 24px; bottom: 32px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: none;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.4);
+}
+
+#backTop:hover { opacity: 0.85; }
+
+/* ========== 滚动动画 ========== */
+.fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ========== 移动端 ========== */
+@media (max-width: 640px) {
+    .hero h1 { font-size: 26px; }
+    .container { padding: 30px 16px 80px; }
+    .navbar { padding: 12px 16px; }
+    .nav-links { gap: 14px; }
+    .work-card { padding: 14px 16px; }
+    .hero-actions { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 280px; justify-content: center; }
+}
+</style>
 </head>
 
 <body>
-    <!-- 导航栏 + LOGO + 暗黑模式开关 -->
-    <div class="navbar">
-        <div class="logo">
-            <div class="logo-icon">凌空</div>
-            凌空工作室
-        </div>
-        <div class="nav-links">
-            <a href="#works">作品</a>
-            <a href="#members">成员</a>
-            <button class="theme-toggle" id="toggle">暗黑模式</button>
-        </div>
+
+<!-- 导航 -->
+<nav class="navbar">
+    <div class="nav-brand">
+        <span class="bracket">{</span>
+        LingKong · 凌空
+        <span class="bracket">}</span>
     </div>
-
-    <div class="container">
-        <h2 id="works">我们的作品</h2>
-        <h3>主要作品</h3>
-        <a class="link-card" href="https://github.com/xxy150310git/G-Lang">G Lang 编程语言</a>
-        <a class="link-card" href="https://xxy150310git.github.io/">xxy150310 的博客</a>
-        <a class="link-card" href="https://xxy150310git.github.io/OI_game/">OI 卡牌游戏（测试中）</a>
-        <a class="link-card" href="https://github.com">CCF 模拟器（还未发布）</a>
-
-        <h3>次要作品</h3>
-        <p class="empty">没有了哦</p>
-
-        <h2 id="members">协作人员</h2>
-        <ol>
-            <li>xxy150310git (xxy150310)</li>
-            <li>catcoder-0 (wangyutang)</li>
-            <li>TT-chen-cqz (TT-chen)</li>
-            <li>Double_GYC(Double-G)</li>
-            
-        </ol>
-
-        <div class="footer">© 2025~2026 凌空工作室 版权所有</div>
+    <div class="nav-links">
+        <a href="#works">Works</a>
+        <a href="#updates">Updates</a>
+        <a href="#members">Members</a>
+        <a href="progress.html">Progress</a>
+        <button class="theme-toggle" id="toggle">☀ light</button>
     </div>
+</nav>
 
-    <script>
-        const toggle = document.getElementById('toggle');
-        const html = document.documentElement;
+<div class="container">
 
-        toggle.addEventListener('click', () => {
-            if (html.classList.contains('light')) {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                toggle.textContent = '亮色模式';
-            } else {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                toggle.textContent = '暗黑模式';
-            }
-        });
-    </script>
+    <!-- HERO -->
+    <section class="hero fade-in">
+        <div class="hero-label">$ whoami</div>
+        <h1>
+            <span class="cn">凌空工作室</span> ·
+            <span class="en">LingKong Studio</span>
+        </h1>
+        <p class="subtitle">
+            <span class="highlight">以代码为翼，逐技术之梦</span><br>
+            Code as wings, chase the dream of technology.<br>
+            专注趣味编程、算法开发与原创项目制作的小众技术工作室
+        </p>
+
+        <!-- 按钮组 -->
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="progress.html">
+                📊 查看开发进度 <span class="arrow">→</span>
+            </a>
+            <a class="btn btn-outline" href="https://github.com/xxy150310git" target="_blank">
+                🔗 GitHub 主页 <span class="arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- 作品 -->
+    <section id="works" class="fade-in">
+        <div class="section-title">
+            <span class="hash">##</span>
+            我们的作品
+            <span class="en-title">Our Works</span>
+        </div>
+
+        <div class="works-grid">
+            <a class="work-card" href="https://github.com/xxy150310git/G-Lang">
+                <div class="work-header">
+                    <span class="work-name">G Lang</span>
+                    <span class="work-name-en">/ 编程语言</span>
+                    <span class="tag">自研</span>
+                </div>
+                <div class="work-desc">基于 C++ 从零实现的简易自研编程语言，持续迭代，探索编译原理与语言底层逻辑</div>
+            </a>
+
+            <a class="work-card" href="https://xxy150310git.github.io/OI_game/">
+                <div class="work-header">
+                    <span class="work-name">OI Card Game</span>
+                    <span class="work-name-en">/ OI 卡牌对决</span>
+                    <span class="tag tag-beta">测试中</span>
+                </div>
+                <div class="work-desc">融合算法竞赛元素的策略卡牌对战游戏，内置天赋系统、AI 对局、随机事件，专为 OIer 打造</div>
+            </a>
+
+            <a class="work-card" href="https://xxy150310git.github.io/">
+                <div class="work-header">
+                    <span class="work-name">xxy150310's Blog</span>
+                    <span class="work-name-en">/ 技术博客</span>
+                </div>
+                <div class="work-desc">算法学习笔记、项目开发日志、技术总结与日常心得</div>
+            </a>
+
+            <a class="work-card" href="#">
+                <div class="work-header">
+                    <span class="work-name">CCF Simulator</span>
+                    <span class="work-name-en">/ CCF 模拟器</span>
+                    <span class="tag tag-wip">开发中</span>
+                </div>
+                <div class="work-desc">针对信息学竞赛场景开发的原创竞赛工具，功能持续开发中，敬请期待</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- 更新动态 -->
+    <section id="updates" class="fade-in">
+        <div class="section-title">
+            <span class="hash">##</span>
+            近期动态
+            <span class="en-title">Recent Updates</span>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="date">07-08</span>
+                <span class="content">工作室更名：凌云 → 凌空 (LingYun → LingKong)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="date">07-08</span>
+                <span class="content">官网上线，采用全新中英双语设计</span>
+            </div>
+            <div class="timeline-item">
+                <span class="date">06-25</span>
+                <span class="content">OI Card Game 天赋系统深度修复，所有天赋 100% 生效</span>
+            </div>
+            <div class="timeline-item">
+                <span class="date">06-20</span>
+                <span class="content">G Lang 完成首次代码提交，开始语言设计之旅</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成员 -->
+    <section id="members" class="fade-in">
+        <div class="section-title">
+            <span class="hash">##</span>
+            协作成员
+            <span class="en-title">Team Members</span>
+        </div>
+
+        <div class="members-grid">
+            <div class="member-card">
+                <img class="member-avatar" src="https://avatars.githubusercontent.com/xxy150310git" alt="xxy150310">
+                <div class="member-info">
+                    <div class="member-name">xxy150310</div>
+                    <div class="member-role">创始人 · 主开发</div>
+                </div>
+            </div>
+            <div class="member-card">
+                <img class="member-avatar" src="https://avatars.githubusercontent.com/catcoder-0" alt="catcoder-0">
+                <div class="member-info">
+                    <div class="member-name">catcoder-0</div>
+                    <div class="member-role">测试 · 功能优化</div>
+                </div>
+            </div>
+            <div class="member-card">
+                <img class="member-avatar" src="https://avatars.githubusercontent.com/TT-chen-cqz" alt="TT-chen">
+                <div class="member-info">
+                    <div class="member-name">TT-chen</div>
+                    <div class="member-role">测试 · 问题调试</div>
+                </div>
+            </div>
+            <div class="member-card">
+                <img class="member-avatar" src="https://avatars.githubusercontent.com/Double_GYC" alt="Double-G">
+                <div class="member-info">
+                    <div class="member-name">Double-G</div>
+                    <div class="member-role">测试 · 功能优化</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 理念 -->
+    <section class="fade-in">
+        <div class="section-title">
+            <span class="hash">##</span>
+            工作室理念
+            <span class="en-title">Our Philosophy</span>
+        </div>
+
+        <div class="works-grid">
+            <div class="work-card" style="cursor: default;">
+                <div class="work-header">
+                    <span class="work-name">Learn → Create</span>
+                    <span class="work-name-en">/ 以学促创</span>
+                </div>
+                <div class="work-desc">将算法学习与编程知识落地为原创项目，学以致用</div>
+            </div>
+            <div class="work-card" style="cursor: default;">
+                <div class="work-header">
+                    <span class="work-name">Fun & Innovation</span>
+                    <span class="work-name-en">/ 趣味创新</span>
+                </div>
+                <div class="work-desc">拒绝枯燥编程，打造轻量化、高趣味性的技术作品</div>
+            </div>
+            <div class="work-card" style="cursor: default;">
+                <div class="work-header">
+                    <span class="work-name">Keep Iterating</span>
+                    <span class="work-name-en">/ 持续迭代</span>
+                </div>
+                <div class="work-desc">所有项目长期维护，持续优化功能、修复问题、新增特性</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span class="brand-cn">凌空工作室</span> ·
+        <span class="brand-en">LingKong Studio</span>
+        · 2026 All Rights Reserved
+    </footer>
+
+</div>
+
+<button id="backTop">↑</button>
+
+<script>
+// 暗黑 / 亮色切换
+const toggle = document.getElementById('toggle');
+const root = document.documentElement;
+
+toggle.onclick = () => {
+    if (root.classList.contains('dark')) {
+        root.classList.replace('dark', 'light');
+        toggle.textContent = '🌙 dark';
+    } else {
+        root.classList.replace('light', 'dark');
+        toggle.textContent = '☀ light';
+    }
+};
+
+// 滚动渐显
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// 返回顶部
+const backBtn = document.getElementById('backTop');
+window.onscroll = () => {
+    backBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+};
+backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// 控制台彩蛋
+console.log(
+    '%c{ LingKong Studio }%c 凌空工作室',
+    'color:#7aa2f7;font-size:22px;font-weight:bold;',
+    'color:#bb9af7;font-size:18px;'
+);
+console.log('%cCode as wings, chase the dream of technology 🚀', 'color:#9ece6a;');
+</script>
+
 </body>
 </html>
